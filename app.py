@@ -18,8 +18,12 @@ if __name__ == '__main__':
     app = App(configuration=configuration)
 
     '''
-    # app.add_character('a', 10, 15)
-    # app.add_character('b', 15, 10)
+    app.add_character('a', 10, 15)
+    app.add_character('b', 15, 10)
+    app.add_character('c', 5, 20)
+    app.add_character('d', 2, 30)    
+    
+    
     for a in string.ascii_lowercase:
         for b in string.ascii_lowercase:
             for c in string.ascii_lowercase:
@@ -35,4 +39,6 @@ if __name__ == '__main__':
     # print(app.all_characters())
     for _ in range(5):
         print(with_time(lambda: app.find_at(10, 15)))
+        print(with_time(lambda: app.find_at(15, 10)))
         print(with_time(lambda: app.find_at_hash(10, 15)))
+        print(with_time(lambda: app.find_at_hash(15, 10)))
