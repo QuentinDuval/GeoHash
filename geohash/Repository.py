@@ -1,4 +1,6 @@
 import sqlalchemy as db
+
+from geohash import Map
 from geohash.Configuration import *
 
 
@@ -23,11 +25,33 @@ class Repository:
                 db.Table(
                     self.LOCATION_TABLE,
                     metadata,
-                    db.Column('id', db.String, primary_key=True),
-                    db.Column('name', db.String),
-                    db.Column('x', db.Integer),
-                    db.Column('y', db.Integer),
-                    db.Column('hash', db.String)
+                    db.Column('id', db.Integer, primary_key=True),
+                    db.Column('name', db.String, unique=True),
+                    db.Column('x', db.Float, index=True),
+                    db.Column('y', db.Float, index=True),
+                    db.Column('hash', db.String, index=True)
                 )
                 metadata.create_all(self.engine)
 
+    def add_character(self, name: str, x: float, y: float, map: Map):
+        with self.engine.connect() as connection:
+            metadata = db.MetaData()
+            location = db.Table(self.LOCATION_TABLE, metadata, autoload=True, autoload_with=self.engine)
+            statement = db.insert(location).values(name=name, x=x, y=y, hash=map.get_geohash(x, y))
+            connection.execute(statement)
+
+    def all_characters(self):
+        with self.engine.connect() as connection:
+            metadata = db.MetaData()
+            location = db.Table(self.LOCATION_TABLE, metadata, autoload=True, autoload_with=self.engine)
+            query = db.select([location.c.name])
+            result_proxy = connection.execute(query)
+            return result_proxy.fetchall()
+
+    def find_at(self, x: float, y: float):
+        with self.engine.connect() as connection:
+            metadata = db.MetaData()
+            location = db.Table(self.LOCATION_TABLE, metadata, autoload=True, autoload_with=self.engine)
+            query = db.select([location.c.name]).where(location.c.x == x and location.c.y == y)
+            result_proxy = connection.execute(query)
+            return result_proxy.fetchall()
