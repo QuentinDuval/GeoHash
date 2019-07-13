@@ -21,7 +21,14 @@ if __name__ == '__main__':
     app.add_character('a', 10, 15)
     app.add_character('b', 15, 10)
     app.add_character('c', 5, 20)
-    app.add_character('d', 2, 30)    
+    app.add_character('d', 2, 30)
+    app.add_character('e', 2, 30)
+    app.add_character('f', 2, 31)
+    app.add_character('g', 2, 32)
+    app.add_character('h', 2, 33)
+    app.add_character('i', 2, 34)
+    app.add_character('j', 2, 35)
+    app.add_character('k', 2, 36)
     
     
     for a in string.ascii_lowercase:
@@ -36,13 +43,14 @@ if __name__ == '__main__':
                         print(e)
     '''
 
-    # print(app.all_characters())
+    for _ in range(5):
+        print('-' * 50)
 
-    print(with_time(lambda: app.find_at(10, 15)))
-    print(with_time(lambda: app.find_at(15, 10)))
-    print(with_time(lambda: app.find_around(2, 30)))
+        print(with_time(lambda: app.find_at(10, 15)))
+        print(with_time(lambda: app.find_at(15, 10)))
+        print(with_time(lambda: app.find_around(2, 30)))
 
-    print(with_time(lambda: app.find_at_hash(10, 15)))
-    print(with_time(lambda: app.find_at_hash(15, 10)))
-    print(with_time(lambda: app.find_around_hash(2, 30)))
+        print(with_time(lambda: app.find_at_hash(10, 15)))
+        print(with_time(lambda: app.find_at_hash(15, 10)))
+        print(with_time(lambda: app.find_around_hash(2, 30)))
 
