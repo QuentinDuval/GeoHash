@@ -46,7 +46,7 @@ class Repository:
             location = db.Table(self.LOCATION_TABLE, metadata, autoload=True, autoload_with=self.engine)
             query = db.select([location.c.name])
             result_proxy = connection.execute(query)
-            return result_proxy.fetchall()
+            return [row[0] for row in result_proxy.fetchall()]
 
     def find_at(self, x: float, y: float):
         with self.engine.connect() as connection:
@@ -54,4 +54,13 @@ class Repository:
             location = db.Table(self.LOCATION_TABLE, metadata, autoload=True, autoload_with=self.engine)
             query = db.select([location.c.name]).where(location.c.x == x and location.c.y == y)
             result_proxy = connection.execute(query)
-            return result_proxy.fetchall()
+            return [row[0] for row in result_proxy.fetchall()]
+
+    def find_at_hash(self, x: float, y: float, map: Map):
+        h = map.get_geohash(x, y)
+        with self.engine.connect() as connection:
+            metadata = db.MetaData()
+            location = db.Table(self.LOCATION_TABLE, metadata, autoload=True, autoload_with=self.engine)
+            query = db.select([location]).where(location.c.hash == h)
+            result_proxy = connection.execute(query)
+            return [row[1] for row in result_proxy.fetchall() if row[2] == x and row[3] == y]

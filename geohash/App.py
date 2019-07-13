@@ -18,3 +18,6 @@ class App:
     def find_at(self, x: float, y: float):
         return self.repository.find_at(x, y)
 
+    def find_at_hash(self, x: float, y: float):
+        return self.repository.find_at_hash(x, y, self.map)
+

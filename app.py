@@ -9,3 +9,4 @@ if __name__ == '__main__':
     # app.add_character('b', 15, 10)
     print(app.all_characters())
     print(app.find_at(10, 15))
+    print(app.find_at_hash(10, 15))
