@@ -1,1 +1,1 @@
-docker run -ti geohash_test
+docker run --network "host" -ti geohash_test
