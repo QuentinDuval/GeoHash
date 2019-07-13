@@ -15,12 +15,10 @@ class Map:
     def cell_y(self):
         return self.max_y / (2 ** self.depth)
 
-    def neighboring_hash(self, x: float, y: float) -> List[str]:
-        bits = []
-        for bx, by in zip(self.dimension_hash(x, 0, self.max_x),
-                          self.dimension_hash(y, 0, self.max_y)):
-            bits.extend([bx, by])
-        return []   # TODO - just add 1 or 10 or 11, or subtract this...
+    def neighboring_hashes(self, x: float, y: float) -> List[str]:
+        diff_x = self.cell_x()
+        diff_y = self.cell_y()
+        return [self.get_geohash(x+dx, y+dy) for dx in [-diff_x, 0, diff_x] for dy in [-diff_y, 0, diff_y]]
 
     def get_coord(self, hash: str) -> Tuple[float, float]:
         pass        # TODO - to decode the hash (other way around)

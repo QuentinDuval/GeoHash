@@ -37,8 +37,12 @@ if __name__ == '__main__':
     '''
 
     # print(app.all_characters())
-    for _ in range(5):
-        print(with_time(lambda: app.find_at(10, 15)))
-        print(with_time(lambda: app.find_at(15, 10)))
-        print(with_time(lambda: app.find_at_hash(10, 15)))
-        print(with_time(lambda: app.find_at_hash(15, 10)))
+
+    print(with_time(lambda: app.find_at(10, 15)))
+    print(with_time(lambda: app.find_at(15, 10)))
+    print(with_time(lambda: app.find_around(2, 30)))
+
+    print(with_time(lambda: app.find_at_hash(10, 15)))
+    print(with_time(lambda: app.find_at_hash(15, 10)))
+    print(with_time(lambda: app.find_around_hash(2, 30)))
+

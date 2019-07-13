@@ -64,3 +64,31 @@ class Repository:
             query = db.select([location]).where(location.c.hash == h)
             result_proxy = connection.execute(query)
             return [row[1] for row in result_proxy.fetchall() if row[2] == x and row[3] == y]
+
+    def find_around(self, x: float, y: float, map: Map):
+        diff_x = map.cell_x()
+        diff_y = map.cell_y()
+        with self.engine.connect() as connection:
+            metadata = db.MetaData()
+            location = db.Table(self.LOCATION_TABLE, metadata, autoload=True, autoload_with=self.engine)
+            query = db.select([location.c.name])\
+                .where(x - diff_x <= location.c.x)\
+                .where(location.c.x <= x + diff_x)\
+                .where(y - diff_y <= location.c.y)\
+                .where(location.c.y <= y + diff_y)
+            result_proxy = connection.execute(query)
+            return [row[0] for row in result_proxy.fetchall()]
+
+    def find_around_hash(self, x: float, y: float, map: Map):
+        diff_x = map.cell_x()
+        diff_y = map.cell_y()
+        hashes = map.neighboring_hashes(x, y)
+        with self.engine.connect() as connection:
+            metadata = db.MetaData()
+            location = db.Table(self.LOCATION_TABLE, metadata, autoload=True, autoload_with=self.engine)
+            query = db.select([location]).where(location.c.hash.in_(hashes))
+            result = connection.execute(query).fetchall()
+            return [row[1]
+                    for row in result
+                    if x - diff_x <= row[2] <= x + diff_x
+                    and y - diff_y <= row[3] <= y + diff_y]
