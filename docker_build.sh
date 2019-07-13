@@ -1,0 +1,1 @@
+docker build . -t geohash_test

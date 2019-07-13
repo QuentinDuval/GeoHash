@@ -1,0 +1,1 @@
+docker run -ti geohash_test
